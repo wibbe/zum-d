@@ -7,15 +7,18 @@ import std.stdio;
 import std.conv;
 import std.file;
 
+import index;
+import view;
+
 version (Windows)
 {
     version (X86)
     {
-        static string libPath = "lib/win32_x86";
+        enum libPath = "lib/win32_x86";
     }
     version (X86_64)
     {
-        static string libPath = "lib/win32_x64";
+        enum libPath = "lib/win32_x64";
     }
 }
 
@@ -51,6 +54,9 @@ int main(string[] args)
     }
 
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+
+    initView(renderer);
 
     bool running = true;
     while (running)
