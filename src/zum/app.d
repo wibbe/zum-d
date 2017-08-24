@@ -1,31 +1,36 @@
 
 import derelict.sdl2.sdl;
+import derelict.freetype.ft;
 
 import std.string;
 import std.stdio;
 import std.conv;
 import std.file;
 
+version (Windows)
+{
+    version (X86)
+    {
+        static string libPath = "lib/win32_x86";
+    }
+    version (X86_64)
+    {
+        static string libPath = "lib/win32_x64";
+    }
+}
+
 int main(string[] args)
 {
     // Load the correct libraries
-    version (Windows)
-    {
-        version (X86)
-        {
-            if (exists("lib/win32_x86/SDL2.dll"))
-                DerelictSDL2.load("lib/win32_x86/SDL2.dll");
-            else
-                DerelictSDL2.load();
-        }
-        version (X86_64)
-        {
-            if (exists("lib/win32_x86/SDL2.dll"))
-                DerelictSDL2.load("lib/win32_x86/SDL2.dll");
-            else
-                DerelictSDL2.load();
-        }
-    }
+    if (exists(libPath ~ "/SDL2.dll"))
+        DerelictSDL2.load(libPath ~ "/SDL2.dll");
+    else
+        DerelictSDL2.load();
+
+    if (exists(libPath ~ "/freetype271.dll"))
+        DerelictFT.load(libPath ~ "/freetype271.dll");
+    else
+        DerelictFT.load();
 
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -45,6 +50,8 @@ int main(string[] args)
         return 1;
     }
 
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
     bool running = true;
     while (running)
     {
@@ -63,9 +70,15 @@ int main(string[] args)
                 default:
                     break;
             }
+
+            // Repaint window
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            SDL_RenderClear(renderer);
+            SDL_RenderPresent(renderer);
         }
     }
 
+    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
 
