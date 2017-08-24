@@ -1,0 +1,7 @@
+name "zum"
+description "A small spreadsheet application"
+authors "Daniel Wiberg"
+copyright "Copyright © 2017, Daniel Wiberg"
+license "MIT"
+
+dependency "derelict-sdl2" version="~>3.0.0-beta"
