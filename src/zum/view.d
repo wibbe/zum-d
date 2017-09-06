@@ -20,3 +20,10 @@ void initView(SDL_Renderer* renderer)
 {
 	_renderer = renderer;
 }
+
+interface View
+{
+
+}
+
+
