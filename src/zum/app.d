@@ -1,5 +1,5 @@
 
-import derelict.sdl2.sdl;
+import derelict.glfw3.glfw3;
 import derelict.freetype.ft;
 
 import std.string;
@@ -24,24 +24,55 @@ version (Windows)
 
 int main(string[] args)
 {
+    writeln("Main");
+
     // Load the correct libraries
-    if (exists(libPath ~ "/SDL2.dll"))
-        DerelictSDL2.load(libPath ~ "/SDL2.dll");
+    if (exists(libPath ~ "/glfw3.dll"))
+        DerelictGLFW3.load(libPath ~ "/glfw3.dll");
     else
-        DerelictSDL2.load();
+        DerelictGLFW3.load();
 
     if (exists(libPath ~ "/freetype271.dll"))
         DerelictFT.load(libPath ~ "/freetype271.dll");
     else
         DerelictFT.load();
 
-
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    if (!DerelictGLFW3.isLoaded())
     {
-        writeln("Error initializing SDL2: " ~ SDL_GetError().to!string);
+        writeln("Could not load glfw3");
         return 1;
     }
 
+        
+
+    //if (!glfwInit())
+    if (glfwInit is null)
+    {
+        writeln("Error initializing GLFW3");
+        return 1;
+    }
+/*
+
+    GLFWwindow* window = glfwCreateWindow(640, 480, "Zum", null, null);
+    if (window is null)
+    {
+        writeln("Error creating window");
+        return 1;
+    }
+
+    glfwMakeContextCurrent(window);
+
+    while (!glfwWindowShouldClose(window))
+    {
+        glfwWaitEvents();
+        glfwSwapBuffers(window);
+    }
+
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
+*/
+/*
     SDL_Window* window = SDL_CreateWindow(toStringz("Zum"),
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
@@ -87,6 +118,6 @@ int main(string[] args)
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-
+*/
     return 0;
 }
